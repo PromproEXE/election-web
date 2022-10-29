@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ElectorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::prefix('elector')
+    ->controller(ElectorController::class)
+    ->group(function () {
+        Route::get('/', 'getAll')->name('elector-get');
+        Route::post('/create', 'create')->name('elector-create');
+        Route::get('/{id}', 'getOnce');
+        Route::put('/{id}/update', 'update');
+        Route::delete('/{id}/delete', 'destroy');
+    });

@@ -16,7 +16,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Index', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -29,10 +29,14 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Index');
-    })->name('index');
-    Route::get('/register-elector', function() {
-        return Inertia::render('RegisterElector');
-    })->name('register-elector');
+    Route::inertia('/', 'Index')->name('index');
+    Route::prefix('/register-elector')->group(function () {
+        Route::inertia('/', 'RegisterElector')->name('register-elector');
+        Route::inertia('/reg', 'RegisterElector')->name('register-elector-reg');
+        Route::inertia('/edit', 'registerElector/edit')->name('register-elector-edit');
+        Route::inertia('/add', 'registerElector/add')->name('register-elector-add');
+    });
+    Route::prefix('/election')->group(function () {
+        Route::inertia('/', 'election/election')->name('election');
+    });
 });
