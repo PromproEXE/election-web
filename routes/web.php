@@ -32,11 +32,16 @@ Route::middleware([
     Route::inertia('/', 'Index')->name('index');
     Route::prefix('/register-elector')->group(function () {
         Route::inertia('/', 'RegisterElector')->name('register-elector');
-        Route::inertia('/reg', 'RegisterElector')->name('register-elector-reg');
+        Route::inertia('/reg', 'registerElector/register')->name('register-elector-reg');
         Route::inertia('/edit', 'registerElector/edit')->name('register-elector-edit');
         Route::inertia('/add', 'registerElector/add')->name('register-elector-add');
     });
+
     Route::prefix('/election')->group(function () {
         Route::inertia('/', 'election/election')->name('election');
+    });
+
+    Route::prefix('/users')->group(function () {
+        Route::inertia('/', 'users/users')->name('users');
     });
 });
