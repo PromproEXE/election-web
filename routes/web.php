@@ -44,4 +44,8 @@ Route::middleware([
     Route::prefix('/users')->group(function () {
         Route::inertia('/', 'users/users')->name('users');
     });
+
+    Route::prefix('/party')->group(function () {
+        Route::inertia('/', 'users/users')->name('party-list');
+    });
 });

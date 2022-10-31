@@ -18,6 +18,21 @@ const logout = () => {
                 <li><a>ระบบมอนิเตอร์คะแนน</a></li>
                 <li><a :href="route('register-elector')">ระบบลงทะเบียนผู้เลือกตั้ง</a></li>
                 <li><a :href="route('users')">ผู้ใช้งาน</a></li>
+                <div class="dropdown">
+                    <label tabindex="0" class="btn btn-ghost font-normal">
+                        <p>ตั้งค่า</p>
+                        <span class="material-symbols-rounded">expand_more</span>
+                    </label>
+                    <ul class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52" tabindex="0">
+                        <li>
+                            <a :href="route('party-list')">
+                                <span class="material-symbols-rounded">
+                                    format_list_bulleted
+                                </span>จัดการพรรค
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <li tabindex="0">
                     <a class="justify-start">
                         <p>{{ $page.props.user.name }}</p>
