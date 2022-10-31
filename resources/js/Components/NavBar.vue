@@ -25,7 +25,7 @@ const logout = () => {
                     </label>
                     <ul class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52" tabindex="0">
                         <li>
-                            <a :href="route('party-list')">
+                            <a :href="route('party')">
                                 <span class="material-symbols-rounded">
                                     format_list_bulleted
                                 </span>จัดการพรรค

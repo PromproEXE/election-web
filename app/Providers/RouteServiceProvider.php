@@ -33,6 +33,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(function () {
                     require base_path('routes/api/elector.php');
+                    require base_path('routes/api/party.php');
                     require base_path('routes/api/users.php');
                 });
 
