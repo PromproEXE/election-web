@@ -58,12 +58,12 @@ export default {
                 //CHANGE STATUS
                 this.machineStatus = 'success'
                 this.voted = true
-
-                setTimeout(this.getUserData(), 5000)
             }
             catch (err) {
                 console.log(err)
             }
+
+            setTimeout(this.getUserData(), 10000)
         }
     },
     mounted() {
