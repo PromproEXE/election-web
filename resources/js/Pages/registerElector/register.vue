@@ -52,7 +52,7 @@ export default {
         async getNameList() {
             let res = await axios('/api/elector')
             this.nameList = res.data
-            this.displayNameList = this.nameList
+            this.performSearch()
         },
         async getUserList() {
             let res = await axios('/api/users')
@@ -156,6 +156,10 @@ export default {
     async mounted() {
         this.getNameList()
         this.getUserList()
+        let intervalData = setInterval(() => {
+            this.getNameList()
+            this.getUserList()
+        }, 10000)
     }
 }
 </script>
@@ -173,8 +177,8 @@ export default {
                 <input type="text" class="input input-bordered w-full mb-3" placeholder="ค้นหารายชื่อที่นี่"
                     v-model="searchText" @input="performSearch()">
                 <template v-for="data in displayNameList">
-                    <button class="btn btn-secondary block p-3 h-fit text-start w-full mb-3"
-                        v-if="data.vote == null || data.vote == ''" @click="selectedData = data">
+                    <button class="btn btn-secondary block p-3 h-fit text-start w-full mb-3" v-if="data.vote == null"
+                        @click="selectedData = data">
                         <p class="text-2xl text-primary font-bold">{{ data.id }} - {{ data.name }}</p>
                         <p class="text-primary">ชั้น ม.{{ data.class }}/{{ data.room }}</p>
                     </button>
