@@ -35,7 +35,7 @@ const submit = () => {
 
     <AuthenticationCard>
         <template #logo>
-            <AuthenticationCardLogo />
+            <img src="/img/kjn-election-web-icon.png" style="width: 20rem;" alt="logo">
         </template>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -64,14 +64,13 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')"
+                <!-- <Link v-if="canResetPassword" :href="route('password.request')"
                     class="underline text-sm text-gray-600 hover:text-gray-900">
                 Forgot your password?
-                </Link>
+                </Link> -->
 
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
+                <button type="sumbit" class="btn btn-primary ml-2" :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing">เข้าสู่ระบบ</button>
             </div>
         </form>
     </AuthenticationCard>

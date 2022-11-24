@@ -7,31 +7,31 @@ import _ from 'lodash'
 export default {
     data() {
         return {
-            partyList: [],
-            selectedParty: {
+            settingsList: [],
+            selectedSetting: {
 
             },
-            addPartyData: {
+            addSettingData: {
             },
-            rootUrl: route('party')
+            rootUrl: route('system')
         }
     },
     methods: {
         selectData(data) {
-            this.selectedParty = _.cloneDeep(data)
+            this.selectedSetting = _.cloneDeep(data)
         },
-        async getPartyList() {
+        async getSettingList() {
             try {
-                let res = await axios('/api/party')
-                this.partyList = res.data
+                let res = await axios('/api/settings')
+                this.settingsList = res.data
             }
             catch (err) {
                 alert(err)
             }
         },
-        async deleteParty(id) {
+        async deleteSetting(id) {
             try {
-                let res = await axios.delete('/api/party/' + id + '/delete')
+                let res = await axios.delete('/api/settings/' + id + '/delete')
                 if (res.statusText == 'OK') {
                     alert('DELETE')
                     this.closeModal()
@@ -43,12 +43,12 @@ export default {
             catch (err) {
                 alert(err)
             }
-            this.getPartyList()
+            this.getSettingList()
         },
-        async addParty() {
+        async addSetting() {
             try {
                 //CREATE
-                let res = await axios.post('/api/party/create', this.addPartyData)
+                let res = await axios.post('/api/settings/create', this.addSetting)
                 if (res.statusText == 'Created') {
                     alert('ADD PARTY')
                     this.closeModal()
@@ -60,11 +60,11 @@ export default {
             catch (err) {
                 alert(err)
             }
-            this.getPartyList()
+            this.getSettingList()
         },
-        async updateParty() {
+        async updateSetting() {
             try {
-                let res = await axios.put('/api/party/' + this.selectedParty.id + '/update', this.selectedParty)
+                let res = await axios.put('/api/settings/' + this.selectedSetting.id + '/update', this.selectedSetting)
                 if (res.statusText == 'OK') {
                     alert('UPDATE')
                     this.closeModal()
@@ -73,21 +73,21 @@ export default {
             catch (err) {
                 alert(err)
             }
-            this.getPartyList()
+            this.getSettingList()
         },
         closeModal() {
             window.location.href = this.rootUrl + '#'
         }
     },
     mounted() {
-        this.getPartyList()
+        this.getSettingList()
     }
 }
 </script>
 <template>
     <AppLayout title="จัดการผู้ใช้งาน">
         <div class="bg-primary rounded-b-lg text-center py-16">
-            <h1 class="text-6xl text-secondary font-bold">จัดการพรรค</h1>
+            <h1 class="text-6xl text-secondary font-bold">ตั้งค่าระบบ</h1>
         </div>
         <div class="container mx-auto py-7 text-lg">
             <div class="flex justify-end mb-3">
@@ -95,27 +95,27 @@ export default {
                     <span class="material-symbols-rounded">
                         add
                     </span>
-                    เพิ่มพรรค</a>
+                    เพิ่มการตั้งค่า</a>
             </div>
             <table class="table w-full">
                 <thead>
                     <tr>
-                        <th class="text-center">หมายเลขพรรค</th>
-                        <th>ชื่อพรรค</th>
+                        <th class="text-center">ชื่อการตั้งค่า</th>
+                        <th>ค่า</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="hover cursor-pointer" v-for="party in partyList">
-                        <td class="text-center">{{ party.party_number }}</td>
-                        <td>{{ party.party_name || '-' }}</td>
+                    <tr class="hover cursor-pointer" v-for="setting in settingsList">
+                        <td class="text-center">{{ setting.settings_name }}</td>
+                        <td>{{ setting.value || '-' }}</td>
                         <td>
                             <a href="#edit-modal" role="button" class="btn btn-warning mr-2"
-                                @click="selectData(party)"><span class="material-symbols-rounded mr-1">
+                                @click="selectData(setting)"><span class="material-symbols-rounded mr-1">
                                     edit
                                 </span>แก้ไข</a>
-                            <a href="#delete-modal" role="button" class="btn btn-error" @click="selectData(party)"><span
-                                    class="material-symbols-rounded mr-1">
+                            <a href="#delete-modal" role="button" class="btn btn-error"
+                                @click="selectData(setting)"><span class="material-symbols-rounded mr-1">
                                     delete
                                 </span>ลบ</a>
                         </td>
@@ -129,11 +129,11 @@ export default {
                 <div class="flex justify-end">
                     <a role="button" href="#" class="btn btn-circle btn-ghost">X</a>
                 </div>
-                <p class="text-xl mb-9">คุณต้องการลบ <span class="font-bold">{{ selectedParty.party_name }}</span>
+                <p class="text-xl mb-9">คุณต้องการลบ <span class="font-bold">{{ selectedSetting.settings_name }}</span>
                     หรือไม่</p>
                 <div class="grid grid-cols-2">
                     <a href="#" role="button" class="btn base-100 mr-2 text-lg">ยกเลิก</a>
-                    <button class="btn btn-error text-lg" @click="deleteParty(selectedParty.id)">ลบ</button>
+                    <button class="btn btn-error text-lg" @click="deleteSetting(selectedSetting.id)">ลบ</button>
                 </div>
             </div>
         </div>
@@ -141,22 +141,16 @@ export default {
         <div class="modal" tabindex="-1" id="edit-modal">
             <div class="modal-box relative">
                 <div class="flex justify-between items-center">
-                    <p class="font-bold text-2xl">แก้ไขข้อมูลพรรค</p>
+                    <p class="font-bold text-2xl">ตั้งค่า {{ selectedSetting.settings_name }}</p>
                     <a href="#" role="button" class="btn btn-circle btn-ghost top-1">✕</a>
                 </div>
-                <label for="edit-add-name" class="label">
-                    <h6>หมายเลขพรรค</h6>
+                <label for="edit-value" class="label">
+                    <h6>ค่า</h6>
                 </label>
-                <input type="number" min="1" id="edit-add-name" class="input input-bordered w-full"
-                    v-model="selectedParty.party_number" @keyup.enter="updateParty(selectedParty)">
-                <label for="edit-add-password" class="label">
-                    <h6>ชื่อพรรค</h6>
-                </label>
-                <input type="text" id="edit-add-password" class="input input-bordered w-full"
-                    v-model="selectedParty.party_name" @keyup.enter="updateParty(selectedParty)">
+                <input type="text" id="edit-value" class="input input-bordered w-full" v-model="selectedSetting.value">
                 <div class="modal-action">
                     <a class="btn btn-base-100" href="#">ยกเลิก</a>
-                    <a class="btn btn-success" @click="updateParty(selectedParty)">บันทึก</a>
+                    <a class="btn btn-success" @click="updateSetting(selectedSetting)">บันทึก</a>
                 </div>
             </div>
         </div>
@@ -164,22 +158,22 @@ export default {
         <div class="modal" tabindex="-1" id="add-modal">
             <div class="modal-box relative">
                 <div class="flex justify-between items-center">
-                    <p class="font-bold text-2xl">เพิ่มพรรค</p>
+                    <p class="font-bold text-2xl">เพิ่มการตั้งค่า</p>
                     <a href="#" role="button" class="btn btn-circle btn-ghost top-1">✕</a>
                 </div>
                 <label for="edit-add-name" class="label">
-                    <h6>หมายเลขพรรค</h6>
+                    <h6>ชื่อการตั้งค่า</h6>
                 </label>
                 <input type="number" min="1" id="edit-add-name" class="input input-bordered w-full"
-                    v-model="addPartyData.party_number">
+                    v-model="addSettingData.settings_name">
                 <label for="edit-add-password" class="label">
-                    <h6>ชื่อพรรค</h6>
+                    <h6>ค่า</h6>
                 </label>
                 <input type="text" id="edit-add-password" class="input input-bordered w-full"
-                    v-model="addPartyData.party_name">
+                    v-model="addSettingData.value">
                 <div class="modal-action">
                     <a class="btn btn-base-100" href="#">ยกเลิก</a>
-                    <a class="btn btn-success" type="button" @click="addParty()">บันทึก</a>
+                    <a class="btn btn-success" type="button" @click="addSetting()">บันทึก</a>
                 </div>
             </div>
         </div>

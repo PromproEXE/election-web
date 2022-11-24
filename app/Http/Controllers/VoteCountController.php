@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Elector;
 use App\Models\voteCount;
 use Exception;
 use Illuminate\Http\Request;
 
-class ElectorController extends Controller
+class VoteCountController extends Controller
 {
-    protected $elector;
     /**
      * Display a listing of the resource.
      *
@@ -18,8 +16,22 @@ class ElectorController extends Controller
     public function getAll()
     {
         try {
-            $data = Elector::all();
+            $data = voteCount::all();
             return response()->json($data);
+        } catch (Exception $err) {
+            return response()->json([
+                'error' => $err
+            ]);
+        }
+    }
+
+    public function getVoteCount()
+    {
+        try {
+            $count = voteCount::all()->count();
+            return response()->json([
+                'count' => $count
+            ]);
         } catch (Exception $err) {
             return response()->json([
                 'error' => $err
@@ -30,7 +42,7 @@ class ElectorController extends Controller
     public function getOnce($id)
     {
         try {
-            $data = Elector::find($id);
+            $data = voteCount::find($id);
             return response()->json($data);
         } catch (Exception $err) {
             return response()->json([
@@ -47,7 +59,7 @@ class ElectorController extends Controller
     public function create(Request $request)
     {
         try {
-            $electors = Elector::insert($request->all());
+            voteCount::insert($request->all());
             return response()->json();
         } catch (Exception $err) {
             return response()->json([
@@ -66,15 +78,9 @@ class ElectorController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $elector = Elector::find($id);
-            $elector->fill($request->all());
-            $elector->save();
-
-            voteCount::insert([
-                'vote' => $request['vote'],
-                'vote_party' => $request['vote_party'],
-                'vote_at' => $request['vote_at']
-            ]);
+            $voteCount = voteCount::find($id);
+            $voteCount->fill($request->all());
+            $voteCount->save();
 
             return response()->json();
         } catch (Exception $err) {
@@ -93,7 +99,7 @@ class ElectorController extends Controller
     public function destroy(Request $request, $id)
     {
         try {
-            Elector::destroy($id);
+            voteCount::destroy($id);
             return response()->json();
         } catch (Exception $err) {
             return response()->json([

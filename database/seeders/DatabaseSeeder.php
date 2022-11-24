@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Party;
+use App\Models\Settings;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -17,15 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         User::create(array(
-            'name' => 'promproexe',
-            'email' => 'promproexe@outlook.co.th',
+            'name' => 'ADMIN',
             'password' => Hash::make('12345678'),
             'role' => [
                 'elector' => false,
@@ -36,8 +32,7 @@ class DatabaseSeeder extends Seeder
             'elector_status' => 'unavaliable',
         ));
         User::create(array(
-            'name' => 'elector1',
-            'email' => 'elector1@gmail.com',
+            'name' => 'ELECTOR_1',
             'password' => Hash::make('12345678'),
             'role' => [
                 'elector' => true,
@@ -46,6 +41,21 @@ class DatabaseSeeder extends Seeder
                 'admin' => false
             ],
             'elector_status' => 'unavaliable',
+        ));
+        User::create(array(
+            'name' => 'ELECTOR_2',
+            'password' => Hash::make('12345678'),
+            'role' => [
+                'elector' => true,
+                'register' => false,
+                'monitor' => false,
+                'admin' => false
+            ],
+            'elector_status' => 'unavaliable',
+        ));
+        Settings::create(array(
+            'settings_name' => 'election_mode',
+            'value' => 'number_only'
         ));
     }
 }

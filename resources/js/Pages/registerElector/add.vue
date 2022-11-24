@@ -14,35 +14,38 @@ export default {
     },
     methods: {
         readCsvFile() {
-            let CSVFile = document.getElementById('list-upload').files[0]
-            const reader = new FileReader()
+            let CSVFile = document.getElementById('list-upload').files
 
             //READ FILE
-            let CSVText = reader.readAsText(CSVFile)
+            for (let file of CSVFile) {
+                var reader = new FileReader()
+                console.log(file)
+                reader.readAsText(file)
 
-            //GET LIST
-            reader.onload = (e) => {
-                const text = e.target.result;
-                let nameArr = text.split('\n')
-                let fullClass = nameArr[0].split(',')[0]
-                let classes = fullClass.split('/')[0]
-                let room = fullClass.split('/')[1]
-                nameArr.splice(0, 1)
+                //GET LIST
+                reader.onload = (e) => {
+                    const text = e.target.result;
+                    console.log(text)
+                    let nameArr = text.split('\n')
+                    let fullClass = nameArr[0].split(',')[0]
+                    let classes = fullClass.split('/')[0]
+                    let room = fullClass.split('/')[1]
+                    nameArr.splice(0, 1)
 
-                //CLEAN DATA
-                nameArr = nameArr.map((data) => data.replace('\r', '') && data.split(','))
+                    //CLEAN DATA
+                    nameArr = nameArr.map((data) => data.replace('\r', '') && data.split(','))
 
-                this.nameList = []
-                for (let data of nameArr) {
-                    if (data[0] == '' || data[1] == '') continue
-                    this.nameList.push({
-                        id: data[0],
-                        name: data[1],
-                        class: classes,
-                        room: room
-                    })
-                }
-            };
+                    for (let data of nameArr) {
+                        if (data[0] == '' || data[1] == '') continue
+                        this.nameList.push({
+                            id: data[0],
+                            name: data[1],
+                            class: classes,
+                            room: room
+                        })
+                    }
+                };
+            }
         },
         async uploadNameList() {
             try {
@@ -68,8 +71,8 @@ export default {
                         class="font-bold"><a href="/" class="link link-primary">รูปแบบไฟล์นี้</a></span></p>
                 <p class="text-gray-500">เพิ่มไฟล์รายชื่อ (.csv)</p>
                 <form @submit.prevent="uploadNameList()">
-                    <InputFile id="list-upload" class="mb-4" @input="readCsvFile()" accept=".csv" :multiple="true">
-                    </InputFile>
+                    <input type="file" id="list-upload" class="mb-4 file-input file-input-bordered w-full"
+                        @input="readCsvFile()" accept=".csv" multiple>
                     <div class="grid grid-cols-2 gap-3">
                         <button class="btn btn-success w-100 text-xl" type="submit">อัปโหลดรายชื่อ</button>
                         <button class="btn btn-error w-100 text-xl" type="reset">รีเซ็ต</button>
@@ -80,26 +83,28 @@ export default {
                 <h1 class="text-primary text-5xl font-bold mb-3">รายชื่อที่จะทำการอัปโหลด</h1>
 
                 <!-- LIST -->
-                <div class="bg-secondary text-primary rounded-xl drop-shadow-xl p-4 flex justify-between mb-3"
-                    v-for="(data, i) in nameList">
-                    <div class="flex items-center">
-                        <h1 class="text-5xl font-bold mr-3">{{ i + 1 }}</h1>
+                <div class="overflow-auto" style="max-height: 35rem;">
+                    <div class="bg-secondary text-primary rounded-xl drop-shadow-xl p-4 flex justify-between mb-3"
+                        v-for="(data, i) in nameList">
+                        <div class="flex items-center">
+                            <h1 class="text-5xl font-bold mr-3">{{ i + 1 }}</h1>
+                            <div>
+                                <p class="font-bold text-xl">ชื่อ: {{ data.name }}</p>
+                                <p>ชั้น: ม.{{ data.class }}/{{ data.room }}</p>
+                            </div>
+                        </div>
                         <div>
-                            <p class="font-bold text-xl">ชื่อ: {{ data.name }}</p>
-                            <p>ชั้น: ม.{{ data.class }}/{{ data.room }}</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="tooltip" data-tip="แก้ไข">
-                            <a role="button" href="#edit-modal" class="btn btn-warning mr-3 font-bold"
-                                @click="selectedData = data">
-                                <span class="material-symbols-rounded">edit</span>
-                            </a>
-                        </div>
-                        <div class="tooltip" data-tip="ลบ">
-                            <button class="btn btn-error font-bold" @click="nameList.splice(i, 1)">
-                                <span class="material-symbols-rounded">delete</span>
-                            </button>
+                            <div class="tooltip" data-tip="แก้ไข">
+                                <a role="button" href="#edit-modal" class="btn btn-warning mr-3 font-bold"
+                                    @click="selectedData = data">
+                                    <span class="material-symbols-rounded">edit</span>
+                                </a>
+                            </div>
+                            <div class="tooltip" data-tip="ลบ">
+                                <button class="btn btn-error font-bold" @click="nameList.splice(i, 1)">
+                                    <span class="material-symbols-rounded">delete</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

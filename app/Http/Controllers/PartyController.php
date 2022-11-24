@@ -24,8 +24,8 @@ class PartyController extends Controller
     public function create(Request $input)
     {
         Validator::make($input->all(), [
-            'party_number' => ['required'],
-            'party_name' => ['required', 'string']
+            'party_number' => ['required', 'unique:parties,party_number'],
+            'party_name' => ['required', 'string', 'unique:parties,party_name']
         ])->validate();
 
         return Party::create([

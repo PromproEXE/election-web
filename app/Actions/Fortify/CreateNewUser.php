@@ -35,7 +35,7 @@ class CreateNewUser implements CreatesNewUsers
                 'elector' => false,
                 'register' => false,
                 'monitor' => false,
-                'admin' => true
+                'admin' => false
             ],
             'elector_status' => 'avaliable'
         ]);

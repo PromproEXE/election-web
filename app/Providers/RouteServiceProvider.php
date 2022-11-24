@@ -35,6 +35,9 @@ class RouteServiceProvider extends ServiceProvider
                     require base_path('routes/api/elector.php');
                     require base_path('routes/api/party.php');
                     require base_path('routes/api/users.php');
+                    require base_path('routes/api/settings.php');
+                    require base_path('routes/api/voteCount.php');
+                    require base_path('routes/api/helper.php');
                 });
 
             Route::middleware('web')

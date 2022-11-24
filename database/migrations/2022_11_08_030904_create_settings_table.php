@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('electors', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->string('name');
-            $table->smallInteger('class');
-            $table->smallInteger('room');
-            $table->boolean('vote')->nullable();
-            $table->string('vote_party')->nullable();
-            $table->string('vote_at')->nullable();
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
+            $table->string('settings_name');
+            $table->string('value');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('electors');
+        Schema::dropIfExists('settings');
     }
 };

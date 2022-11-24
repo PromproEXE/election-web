@@ -45,7 +45,13 @@ Route::middleware([
         Route::inertia('/', 'users/users')->name('users');
     });
 
-    Route::prefix('/party')->group(function () {
-        Route::inertia('/', 'users/users')->name('party-list');
+    Route::prefix('/settings')->group(function () {
+        Route::inertia('/party', 'settings/party')->name('party');
+        Route::inertia('/system', 'settings/system')->name('system');
+    });
+
+
+    Route::prefix('/monitor')->group(function () {
+        Route::inertia('/', 'monitor/monitor')->name('monitor');
     });
 });

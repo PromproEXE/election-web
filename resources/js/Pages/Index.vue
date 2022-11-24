@@ -11,10 +11,21 @@ import Welcome from '@/Components/Welcome.vue';
             </h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <Welcome />
+        <div class="p-10">
+            <div class="grid grid-cols-2 gap-5">
+                <div class="bg-secondary rounded-xl p-5 drop-shadow-xl">
+                    <p class="text-4xl font-bold text-primary">ระบบเลือกตั้ง</p>
+                </div>
+                <div class="grid grid-cols-1">
+                    <div class="bg-secondary rounded-xl p-5 mb-5 drop-shadow-xl">
+                        <p class="text-4xl font-bold text-primary">ระบบลงทะเบียนผู้เลือกตั้ง</p>
+                    </div>
+                    <div class="bg-secondary rounded-xl p-5 mb-5 drop-shadow-xl">
+                        <p class="text-4xl font-bold text-primary">ระบบจัดการเครื่องเลือกตั้ง</p>
+                    </div>
+                    <div class="bg-secondary rounded-xl p-5 drop-shadow-xl">
+                        <p class="text-4xl font-bold text-primary">ระบบจัดการพรรค</p>
+                    </div>
                 </div>
             </div>
         </div>

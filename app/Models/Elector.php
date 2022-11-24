@@ -12,7 +12,7 @@ class Elector extends Model
         'created_at',
         'updated_at'
     ];
-    protected $fillable = ['id', 'name', 'class', 'room', 'vote', 'vote_party', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'name', 'class', 'room', 'vote', 'vote_party', 'vote_at', 'created_at', 'updated_at'];
     protected $casts = [
         'id' => 'string',
     ];

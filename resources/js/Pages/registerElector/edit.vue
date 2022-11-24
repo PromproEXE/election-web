@@ -1,6 +1,5 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import InputFile from '@/Components/inputFile.vue';
 import axios from 'axios'
 import _ from 'lodash'
 </script>
@@ -10,7 +9,10 @@ export default {
     data() {
         return {
             nameList: [],
-            selectedData: {}
+            displayNameList: [],
+            selectedData: {},
+            searchText: '',
+            rootUrl: route('register-elector-edit')
         }
     },
     methods: {
@@ -22,6 +24,7 @@ export default {
                 }
                 this.getNameList()
                 alert('UPDATE')
+                this.closeModal()
             }
             catch (err) {
                 console.log(err)
@@ -30,19 +33,32 @@ export default {
         async getNameList() {
             let res = await axios('/api/elector')
             this.nameList = res.data
+            this.performSearch()
         },
         async deleteData(id) {
             try {
                 let res = await axios.delete('/api/elector/' + id + '/delete')
                 alert('DELETE')
+                this.closeModal()
             }
             catch (err) {
                 console.log(err)
             }
             this.getNameList()
         },
+        performSearch() {
+            if (this.searchText == '') {
+                this.displayNameList = this.nameList
+            }
+            else {
+                this.displayNameList = this.nameList.filter((datas) => datas.id.indexOf(this.searchText) > -1 || datas.name.indexOf(this.searchText) > -1)
+            }
+        },
         selectData(data) {
             this.selectedData = _.cloneDeep(data)
+        },
+        closeModal() {
+            window.location.href = this.rootUrl + '#'
         }
     },
     async mounted() {
@@ -56,6 +72,8 @@ export default {
             <h1 class="text-6xl text-secondary font-bold">แก้ไขรายชื่อผู้มีสิทธิ์เลือกตั้ง</h1>
         </div>
         <div class="container mx-auto py-7 text-lg">
+            <input type="text" class="input input-bordered w-full mb-5" v-model="searchText" @input="performSearch()"
+                placeholder="ค้นหาด้วยชื่อหรือเลขประจำตัว">
             <table class="table w-full">
                 <thead>
                     <tr>
@@ -68,7 +86,7 @@ export default {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="hover cursor-pointer" v-for="(data, i) in nameList">
+                    <tr class="hover cursor-pointer" v-for="(data, i) in displayNameList">
                         <td class="text-center">{{ i + 1 }}</td>
                         <td>{{ data.id }}</td>
                         <td>{{ data.class }}</td>
@@ -76,8 +94,13 @@ export default {
                         <td>{{ data.name }}</td>
                         <td>
                             <a href="#edit-modal" role="button" class="btn btn-warning mr-2"
-                                @click="selectData(data)">แก้ไข</a>
-                            <a href="#delete-modal" role="button" class="btn btn-error" @click="selectData(data)">ลบ</a>
+                                @click="selectData(data)"><span class="material-symbols-rounded mr-1">
+                                    edit
+                                </span>แก้ไข</a>
+                            <a href="#delete-modal" role="button" class="btn btn-error" @click="selectData(data)"><span
+                                    class="material-symbols-rounded mr-1">
+                                    delete
+                                </span>ลบ</a>
                         </td>
                     </tr>
                 </tbody>

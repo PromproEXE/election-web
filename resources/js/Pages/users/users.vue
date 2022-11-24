@@ -121,7 +121,6 @@ export default {
                     <tr>
                         <th class="text-center">#</th>
                         <th>ชื่อ</th>
-                        <th>อีเมล</th>
                         <th class="text-center">เลือกตั้ง</th>
                         <th class="text-center">ลงทะเบียนผู้เลือกตั้ง</th>
                         <th class="text-center">Monitor</th>
@@ -133,7 +132,6 @@ export default {
                     <tr class="hover cursor-pointer" v-for="(user, i) in userList">
                         <td class="text-center">{{ i + 1 }}</td>
                         <td>{{ user.name }}</td>
-                        <td>{{ user.email || '-' }}</td>
                         <td class="text-center">
                             <span class="material-symbols-rounded">
                                 {{ user.role.elector ? 'done' : 'close' }}
@@ -156,8 +154,13 @@ export default {
                         </td>
                         <td>
                             <a href="#edit-modal" role="button" class="btn btn-warning mr-2"
-                                @click="selectData(user)">แก้ไข</a>
-                            <a href="#delete-modal" role="button" class="btn btn-error" @click="selectData(user)">ลบ</a>
+                                @click="selectData(user)"><span class="material-symbols-rounded mr-1">
+                                    edit
+                                </span>แก้ไข</a>
+                            <a href="#delete-modal" role="button" class="btn btn-error" @click="selectData(user)"><span
+                                    class="material-symbols-rounded mr-1">
+                                    delete
+                                </span>ลบ</a>
                         </td>
                     </tr>
                 </tbody>
