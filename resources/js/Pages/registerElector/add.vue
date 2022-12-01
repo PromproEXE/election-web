@@ -36,7 +36,7 @@ export default {
                     nameArr = nameArr.map((data) => data.replace('\r', '') && data.split(','))
 
                     for (let data of nameArr) {
-                        if (data[0] == '' || data[1] == '') continue
+                        if (data[0] == '' || data[1] == '' || data[0] == null || data[1] == null) continue
                         this.nameList.push({
                             id: data[0],
                             name: data[1],
@@ -75,7 +75,7 @@ export default {
                         @input="readCsvFile()" accept=".csv" multiple>
                     <div class="grid grid-cols-2 gap-3">
                         <button class="btn btn-success w-100 text-xl" type="submit">อัปโหลดรายชื่อ</button>
-                        <button class="btn btn-error w-100 text-xl" type="reset">รีเซ็ต</button>
+                        <button class="btn btn-error w-100 text-xl" type="reset" @click="nameList = []">รีเซ็ต</button>
                     </div>
                 </form>
             </div>
