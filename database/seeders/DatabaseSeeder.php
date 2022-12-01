@@ -128,7 +128,19 @@ class DatabaseSeeder extends Seeder
         //PARTIES
         Party::create(array(
             'party_number' => '1',
-            'party_name' => 'name'
+            'party_name' => 'KPNKiDก้าวหน้า'
+        ));
+        Party::create(array(
+            'party_number' => '2',
+            'party_name' => 'พรรคกาญจน์เรียน'
+        ));
+        Party::create(array(
+            'party_number' => '3',
+            'party_name' => 'THE LAST JIGSAW OF KPN'
+        ));
+        Party::create(array(
+            'party_number' => '4',
+            'party_name' => 'What The PAKS For KPN'
         ));
 
         //SETTINGS
