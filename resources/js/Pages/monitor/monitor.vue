@@ -41,15 +41,25 @@ export default {
             }
         },
         async sendReport() {
-            let voted = this.nameList.filter((data) => data.vote != null)
-            let reportData = {
-                'none of the above': voted.filter((data) => data.vote == 0).length
-            }
-            for (let party of this.partyList) {
-                reportData[party.party_number] = voted.filter((data) => data.vote == party.party_number).length
-            }
+            let status = confirm('คุณแน่ใจหรือไม่ว่าจะทำการส่งและสรุปข้อมูล')
 
-            console.log(reportData)
+            try {
+                if (status == true) {
+                    let res = await axios('/api/elector')
+                    let elector = res.data
+
+                    let resPost = await axios('https://dev.somsritshirt.com/api/score/create', elector)
+                    if (resPost.status == 200) {
+                        alert('ส่งข้อมูลแล้ว')
+                    }
+                    else {
+                        alert('ERR')
+                    }
+                }
+            }
+            catch (err) {
+                console.log(err)
+            }
         }
     },
     computed: {
