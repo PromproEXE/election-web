@@ -19,6 +19,7 @@ Route::prefix('elector')
     ->controller(ElectorController::class)
     ->group(function () {
         Route::get('/', 'getAll')->name('elector-get');
+        Route::get('/voted', 'getVoted')->name('elector-get-voted');
         Route::post('/create', 'create')->name('elector-create');
         Route::get('/{id}', 'getOnce');
         Route::put('/{id}/update', 'update');

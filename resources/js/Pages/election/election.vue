@@ -31,17 +31,20 @@ export default {
                 alert(err)
             }
         },
-        getUserData() {
+        async getUserData() {
             let intervalData = setInterval(async () => {
+                this.machineStatus = 'avaliable'
                 try {
                     let res = await axios('/api/users/me')
                     if (res.statusText == 'OK') {
-                        this.getPartyData()
                         this.machineStatus = res.data.elector_status
                         this.electorData = res.data.elector_data
 
                         if (this.machineStatus == 'using') {
+                            // await this.getPartyData()
+                            const controller = new AbortController();
                             this.userData = res.data
+                            controller.abort()
                             clearInterval(intervalData)
                         }
                     }
@@ -52,7 +55,7 @@ export default {
                 catch (err) {
                     window.location.reload()
                 }
-            }, 2000)
+            }, 5000)
         },
         async getSetting() {
             let res = await axios('/api/settings')
@@ -66,6 +69,7 @@ export default {
             }
         },
         async confirmVote() {
+            this.machineStatus = 'process'
             try {
                 if (this.findSetting('election_mode') == 'name') {
                     //ELECTOR
@@ -105,12 +109,14 @@ export default {
                 //CHANGE STATUS
                 this.machineStatus = 'success'
                 this.voted = true
+
+                setTimeout(this.getUserData(), 3500)
+
+
             }
             catch (err) {
                 console.log(err)
             }
-
-            setTimeout(this.getUserData(), 10000)
         },
         selectVote(vote, voteParty) {
             this.electorData.vote = String(vote)
@@ -202,6 +208,7 @@ export default {
     <div class="h-screen p-5" :class="{
         'bg-error items-center justify-center flex flex-col ': machineStatus == 'unavaliable',
         'bg-info items-center justify-center flex flex-col ': machineStatus == 'avaliable',
+        'bg-warning items-center justify-center flex flex-col ': machineStatus == 'process',
         'bg-success items-center justify-center flex flex-col ': machineStatus == 'success' && voted
     }">
         <div v-if="machineStatus == 'unavaliable'">
@@ -213,6 +220,11 @@ export default {
         <div class="text-center" v-if="machineStatus == 'avaliable'">
             <div class="radial-progress loader mb-5" style="--value:70;"></div>
             <p class="text-gray-700 text-2xl text-center font-bold">เครื่องพร้อมใช้งาน</p>
+            <p class="text-gray-700 text-xl text-center">กรุณารอสักครู่</p>
+        </div>
+        <div class="text-center" v-if="machineStatus == 'process'">
+            <div class="radial-progress loader mb-5" style="--value:70;"></div>
+            <p class="text-gray-700 text-2xl text-center font-bold">ระบบกำลังบันทึกคะแนนของคุณ</p>
             <p class="text-gray-700 text-xl text-center">กรุณารอสักครู่</p>
         </div>
         <div class="text-center" v-if="machineStatus == 'success' && voted">

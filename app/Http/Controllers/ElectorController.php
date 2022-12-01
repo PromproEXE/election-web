@@ -27,6 +27,18 @@ class ElectorController extends Controller
         }
     }
 
+    public function getVoted()
+    {
+        try {
+            $data = Elector::where('vote', '!=', '');
+            return response()->json($data);
+        } catch (Exception $err) {
+            return response()->json([
+                'error' => $err
+            ]);
+        }
+    }
+
     public function getOnce($id)
     {
         try {

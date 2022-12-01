@@ -67,14 +67,14 @@ export default {
             return voted
         },
         votedList() {
-            let voted = this.nameList.filter((data) => data.vote != null)
+            let voted = this.nameList.filter((data) => data.vote != null && data.vote_party != null)
             voted = _.orderBy(voted, (data) => new Date(data.vote_at), 'desc')
             return voted
         }
     },
     mounted() {
-        this.getNameList()
         this.getPartyList()
+        let intervalData = setInterval(async => this.getNameList(), 2000)
     }
 }
 </script>
@@ -94,7 +94,7 @@ export default {
                     <p class="text-xl mb-3">จำนวนผู้ที่ยังไม่ได้ลงคะแนน</p>
                     <p class="text-6xl font-bold mb-3 text-error">{{ summaryElector - votedElector }} คน</p>
                 </div>
-                <button class="btn btn-warning w-full text-xl" @click="sendReport()"><span
+                <button class="btn btn-warning w-full text-xl h-fit" @click="sendReport()"><span
                         class="material-symbols-rounded mr-1">
                         done
                     </span>
